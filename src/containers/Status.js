@@ -1,0 +1,36 @@
+import React from 'react';
+import {connect} from 'react-redux';
+
+import {Status as BaseStatus} from "../components";
+import isUserOnline from "../utils/isUserOnline";
+
+const Status = props => {
+    const {
+        dialogs,
+        user
+    } = props;
+
+    if (!dialogs.items.length || dialogs.currentDialog === 'im') {
+        return null;
+    }
+
+    let online = false;
+    const currentDialog = dialogs.items.find(dialog => dialog._id === dialogs.currentDialog);
+
+    if (currentDialog.author._id === user._id) {
+        online = isUserOnline(currentDialog.partner.last_seen);
+    } else {
+        online = isUserOnline(currentDialog.author.last_seen);
+    }
+
+    return (
+        <BaseStatus online={online} fullname={currentDialog.partner.fullname}/>
+    );
+};
+
+export default connect(
+    ({ dialogs, user }) => ({
+        dialogs,
+        user: user.data
+    }),
+)(Status);

@@ -1,0 +1,23 @@
+@import "../../styles/_variables";
+
+.status {
+  color: #bfbfbf;
+  position: relative;
+  display: inline-block;
+  &:before {
+    position: absolute;
+    top: 5.5px;
+    left: -12px;
+    content:'';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #d3d3d3;
+  }
+  &--online {
+    &:before {
+      background-color: $green;
+    }
+  }
+}

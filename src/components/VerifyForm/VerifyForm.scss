@@ -1,0 +1,34 @@
+.verify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  &__success-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    height: 180px;
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+    h2 {
+      margin-top: 10px;
+    }
+    p {
+      color: #adadad;
+    }
+  }
+}
+
+.block {
+  width: 430px;
+  &__spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,26 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {connect} from "react-redux";
+import {Route, Redirect} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import {Auth, Home} from './pages';
+import {VerifyForm} from "./components";
 
-export default App;
+const App = props => {
+    const {isAuth} = props;
+    return (
+        <div className="wrapper">
+            {isAuth ? <Redirect to='/im'/> :
+                window.location.pathname === '/verify' ?
+                    <Route path="/verify" component={VerifyForm}/> :
+                    <Redirect to='/login'/>
+            }
+            <Route exact path={["/", "/login", "/register"]} component={Auth}/>
+            <Route exact path={["/im", "/dialog/:id"]} component={Home}/>
+        </div>
+    );
+};
+
+export default connect(({user}) => ({isAuth: user.isAuth}))(App);
