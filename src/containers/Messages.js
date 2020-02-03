@@ -28,7 +28,6 @@ const Messages = props => {
             fetchMessages(currentDialog);
 
             socket.on("SERVER:NEW_MESSAGE", () => {
-                console.log('hererere');
                 addMessage(currentDialog);
             });
 

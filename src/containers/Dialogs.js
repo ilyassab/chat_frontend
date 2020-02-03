@@ -9,10 +9,12 @@ const Dialogs = props => {
     const {
         fetchDialogs,
         items,
+        data,
         currentDialog,
         firstLoaded
     } = props;
 
+    const userId = data && data._id;
     const [inputValue, setValue] = useState('');
     const [filterArray, setFilteredArray] = useState(Array.from(items));
 
@@ -39,6 +41,7 @@ const Dialogs = props => {
     return (
         <BaseDialogs
             items={filterArray}
+            userId={userId}
             onSearch={onChangeInput}
             inputValue={inputValue}
             currentDialog={currentDialog}
@@ -48,6 +51,6 @@ const Dialogs = props => {
 };
 
 export default connect(
-    ({dialogs}) => dialogs,
+    ({dialogs, user}) => ({...user, ...dialogs}),
     dialogsActions
 )(Dialogs);

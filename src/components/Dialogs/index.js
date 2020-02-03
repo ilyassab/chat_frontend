@@ -5,7 +5,7 @@ import {DialogItem} from "..";
 
 import './Dialogs.scss';
 
-const Dialogs = ({ items, onSearch, inputValue, currentDialog }) => {
+const Dialogs = ({ items, onSearch, inputValue, currentDialog, userId }) => {
     items = items.sort((a, b) => new Date(b.date) - new Date(a.date));
     console.log(items);
     return (
@@ -21,6 +21,7 @@ const Dialogs = ({ items, onSearch, inputValue, currentDialog }) => {
                 <DialogItem
                     key={item._id}
                     id={item._id}
+                    userId={userId}
                     author={item.author}
                     partner={item.partner}
                     message={item.lastMessage}

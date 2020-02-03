@@ -10,8 +10,14 @@ const Status = props => {
         user
     } = props;
 
+    console.log(user);
+
     if (!dialogs.items.length || dialogs.currentDialog === 'im') {
-        return null;
+        return (
+            <div className="chat__dialog-header-center">
+                <b className="chat__dialog-header-username status__username">Hello, {user ? user.fullname : 'username'}</b>
+            </div>
+        );
     }
 
     let online = false;
@@ -24,12 +30,16 @@ const Status = props => {
     }
 
     return (
-        <BaseStatus online={online} fullname={currentDialog.partner.fullname}/>
+        <BaseStatus online={online}
+                    fullname={currentDialog.partner._id === user._id ?
+                        currentDialog.author.fullname :
+                        currentDialog.partner.fullname}
+        />
     );
 };
 
 export default connect(
-    ({ dialogs, user }) => ({
+    ({dialogs, user}) => ({
         dialogs,
         user: user.data
     }),
