@@ -20,7 +20,9 @@ const LoginForm = props => {
                 <p>Пожалуйста, войдите в свой аккаунт</p>
             </div>
             <Block>
-                <Form className="login-form">
+                <Form className="login-form" onKeyUp={(e) => {
+                    e.keyCode === 13 && handleSubmit();
+                }}>
                     <Form.Item
                         validateStatus={validateField('email', touched, errors)}
                         hasFeedback

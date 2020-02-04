@@ -23,7 +23,9 @@ const RegisterForm = props => {
                     </div>)}
             <Block>
                 {!(status === 'success') ? (
-                    <Form className="login-form">
+                    <Form className="login-form" onKeyUp={(e) => {
+                        e.keyCode === 13 && handleSubmit();
+                    }}>
                         <Form.Item
                             validateStatus={validateField('email', touched, errors)}
                             hasFeedback
