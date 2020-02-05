@@ -3,7 +3,7 @@ import {withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {Icon} from 'antd';
 
-import {Messages, ChatInput, Status, Sidebar} from "../../containers";
+import {Messages, Status, Sidebar} from "../../containers";
 
 import './Home.scss';
 import {dialogsActions} from "../../redux/actions";
@@ -30,12 +30,8 @@ const Home = (props) => {
                         <Status/>
                         <Icon type='ellipsis' style={{fontSize: '22px'}}/>
                     </div>
-                    <div className="chat__dialog-messages">
+
                         <Messages/>
-                    </div>
-                    <div className="chat__dialog-input">
-                        <ChatInput/>
-                    </div>
                 </div>
             </div>
         </section>

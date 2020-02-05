@@ -95,7 +95,7 @@ const Message = (props) => {
             "message--isme": isMe,
             "message--is-typing": isTyping,
             "message--is-audio": audio,
-            "message--image": attachments.length === 1
+            "message--image": attachments.length === 1 && text === ''
         })}>
             <div className="message__content">
                 {isMe && <ReadIcon isRead={read}/>}
@@ -131,7 +131,7 @@ const Message = (props) => {
                     <div className="message__attachments">
                         {
                             attachments.map(item => (
-                                <div key={item.url} className="message__attachments-item">
+                                <div key={item._id} className="message__attachments-item">
                                     <img src={item.url} alt={item.filename}/>
                                 </div>
                             ))

@@ -43,6 +43,7 @@
 
     &-dialogs {
       height: calc(100% - 82px);
+
       .dialogs {
         height: 100%;
         overflow: auto;
@@ -93,12 +94,16 @@
     }
 
     &-messages {
+      height: calc(100% - 158px);
 
-      height: calc(100% - 142px);
+      &-ext {
+        height: calc(100% - 257px);
+      }
+
       .ant-empty {
         position: absolute;
         transform: translate(-50%, -50%);
-        top:50%;
+        top: 50%;
         left: 50%;
       }
     }

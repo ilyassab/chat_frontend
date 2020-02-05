@@ -30,9 +30,14 @@ const actions = {
                 })
         }
     },
-    fetchSendMessage: text => (dispatch, getState) => {
+    fetchSendMessage: (text, attachments) => (dispatch, getState) => {
         const {dialogs} = getState();
-        text && dialogs.currentDialog && messagesApi.send(text, dialogs.currentDialog);
+        if (attachments.length === 0) {
+            text && dialogs.currentDialog && messagesApi.send(text, attachments, dialogs.currentDialog);
+        } else {
+            let filesId = attachments.map(item => item.uid);
+            dialogs.currentDialog && messagesApi.send(text, filesId, dialogs.currentDialog);
+        }
     },
     fetchMessages: (dialogId) => dispatch => {
         dispatch(actions.setIsLoading(true));

@@ -4,7 +4,7 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
     switch (type) {
-        case 'FILE:ADD_ITEMS':
+        case 'FILES:ADD_ITEMS':
             return {
                 ...state,
                 items: [
@@ -12,7 +12,7 @@ export default (state = initialState, {type, payload}) => {
                     payload
                 ],
             };
-        case 'FILE:REMOVE_ITEMS':
+        case 'FILES:REMOVE_ITEMS':
             return {
                 ...state,
                 currentDialog: payload

@@ -3,6 +3,11 @@
   margin: 20px;
   position: relative;
 
+  &__attachments {
+    display: inline-block;
+    margin: -4px 0 0 63px;
+  }
+
   &__emoji-picker {
     position: absolute;
     z-index: 1;
