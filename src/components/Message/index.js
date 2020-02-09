@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Popover, Button} from 'antd';
 import classNames from 'classnames';
+import {Spin, Icon} from 'antd';
 
 import {Time, ReadIcon, Avatar} from '..';
 import {convertCurrentTime} from '../../utils/helpers';
@@ -50,13 +51,13 @@ const AudioElem = ({audio}) => {
             () => {
                 const duration = (audioElem.current && audioElem.current.duration) || 0;
                 setCurrentTime(audioElem.current.currentTime);
-                setProgress((audioElem.current.currentTime / duration) * 100);
+                setProgress((audioElem.current.currentTime / duration) * 100 + 10);
             })
     }, []);
 
     return (
         <div className="message__audio">
-            <audio ref={audioElem} src={audio} preload="auto"/>
+            <audio ref={audioElem} src={audio.url} preload="auto"/>
             <div className="message__audio-progress" style={{width: progress + '%'}}/>
             <div className="message__audio-info">
                 <div className="message__audio-btn">
@@ -77,18 +78,35 @@ const AudioElem = ({audio}) => {
 };
 
 const Message = (props) => {
-    const {
+    let {
         user = {},
         text,
         read,
         id,
         date,
-        audio,
         isMe,
         onDeleteMessage,
         attachments = [],
         isTyping
     } = props;
+
+    console.log(id);
+
+    if (id.indexOf('loading') === 0) {
+        return (
+            <div className="message message--isme">
+                <div className="message__content">
+                    <Spin indicator={<Icon type="loading" style={{fontSize: 24}} spin/>}/>
+                </div>
+            </div>
+        )
+    }
+
+    let audio = attachments.find(item => item && item.ext === 'webm');
+
+    if (audio) {
+        attachments = [];
+    }
 
     return (
         <div className={classNames('message', {
@@ -102,7 +120,7 @@ const Message = (props) => {
                 <Popover
                     content={
                         <div>
-                            <Button onClick={() => onDeleteMessage(id)} >Удалить сообщение</Button>
+                            <Button onClick={() => onDeleteMessage(id)}>Удалить сообщение</Button>
                         </div>
                     }
                     trigger='click'
@@ -116,7 +134,9 @@ const Message = (props) => {
                 </div>
                 <div className="message__info">
                     {(audio || text || isTyping) &&
-                    <div className="message__bubble">
+                    <div className={classNames("message__bubble", {
+                        'message__bubble-audio': audio,
+                    })}>
                         {text && <p className="message__text">{text}</p>}
                         {isTyping && (
                             <div className="message__typing">
@@ -131,8 +151,8 @@ const Message = (props) => {
                     <div className="message__attachments">
                         {
                             attachments.map(item => (
-                                <div key={item._id} className="message__attachments-item">
-                                    <img src={item.url} alt={item.filename}/>
+                                <div key={item && item._id} className="message__attachments-item">
+                                    <img src={item && item.url} alt={item && item.filename}/>
                                 </div>
                             ))
                         }

@@ -3,6 +3,13 @@
   margin: 20px;
   position: relative;
 
+  &__audio {
+    position: relative !important;
+    &-recording {
+      opacity: 1 !important;
+    }
+  }
+
   &__attachments {
     display: inline-block;
     margin: -4px 0 0 63px;

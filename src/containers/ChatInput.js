@@ -5,6 +5,12 @@ import {ChatInput as BaseChatInput} from "../components";
 import {messagesActions} from '../redux/actions'
 import {filesApi} from "../utils/api";
 
+window.navigator.getUserMedia =
+    window.navigator.getUserMedia ||
+    window.navigator.mozGetUserMedia ||
+    window.navigator.msGetUserMedia ||
+    window.navigator.webkitGetUserMedia;
+
 const ChatInput = props => {
     const {
         fetchSendMessage,
@@ -12,12 +18,46 @@ const ChatInput = props => {
     } = props;
 
     const [attachments, setAttachments] = useState([]);
+    const [recording, setRecording] = useState(false);
+    const [mediaRecorder, setMediaRecorder] = useState(null);
 
     if (attachments.length > 0) {
         setAttachActive(true)
     } else {
         setAttachActive(false)
     }
+
+    const onRecordingClick = () => {
+        setRecording(true);
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({audio: true}, onRecording, onError);
+        }
+    };
+
+    const onStopRecordingClick = () => {
+        setRecording(false);
+        mediaRecorder.stop();
+    };
+
+    const onRecording = stream => {
+        const recorder = new MediaRecorder(stream);
+        setMediaRecorder(recorder);
+
+        recorder.start();
+
+        recorder.ondataavailable = e => {
+            const file = new File([e.data], 'audio.webm');
+            filesApi.send(file).then(({data}) => {
+                fetchSendMessage('', [data.file]);
+            })
+                .catch((err) => console.log(err));
+        };
+    };
+
+    const onError = err => {
+        console.log('The following error occured: ' + err);
+    };
+
 
     const onSendMessage = (text, attachments) => {
         fetchSendMessage(text, attachments);
@@ -65,6 +105,9 @@ const ChatInput = props => {
         <BaseChatInput
             onSendMessage={onSendMessage}
             onSelectFiles={onSelectFiles}
+            recording={recording}
+            onRecordingClick={onRecordingClick}
+            onStopRecordingClick={onStopRecordingClick}
             attachments={attachments}
             setAttachments={setAttachments}
         />

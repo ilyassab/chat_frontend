@@ -31,13 +31,27 @@ const actions = {
         }
     },
     fetchSendMessage: (text, attachments) => (dispatch, getState) => {
-        const {dialogs} = getState();
+        const {dialogs, messages, user} = getState();
         if (attachments.length === 0) {
             text && dialogs.currentDialog && messagesApi.send(text, attachments, dialogs.currentDialog);
         } else {
             let filesId = attachments.map(item => item.uid);
-            dialogs.currentDialog && messagesApi.send(text, filesId, dialogs.currentDialog);
+            if (!(attachments[0].ext === 'webm')) {
+                dialogs.currentDialog && messagesApi.send(text, filesId, dialogs.currentDialog); //photos
+            } else {
+                dialogs.currentDialog && messagesApi.send(text, attachments[0]._id, dialogs.currentDialog); //audio
+            }
         }
+        let id = Math.round(Math.random()*1000);
+        dispatch(actions.setMessages([
+            ...messages.items,
+            {
+                _id: `loading${id}`,
+                user: {
+                    _id: user._id
+                }
+            }
+        ]));
     },
     fetchMessages: (dialogId) => dispatch => {
         dispatch(actions.setIsLoading(true));

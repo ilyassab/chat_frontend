@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import classnames from 'classnames';
 import {Button, Input} from "antd";
 import {UploadField} from '@navjobs/upload';
 import {Picker} from "emoji-mart";
@@ -13,6 +14,9 @@ const ChatInput = (props) => {
         onSendMessage,
         onSelectFiles,
         setAttachments,
+        onRecordingClick,
+        onStopRecordingClick,
+        recording,
         attachments
     } = props;
 
@@ -40,7 +44,6 @@ const ChatInput = (props) => {
                             <Picker set='emojione'/>
                         </div>
                     )}
-                    <Button onClick={togglePicker} type='ghost' icon='smile'/>
                 </div>
                 <Input
                     onKeyUp={e => {
@@ -58,7 +61,20 @@ const ChatInput = (props) => {
                         <Button type='ghost' icon='message' onClick={() => {
                             onSend();
                         }}/> :
-                        <Button type='ghost' icon='audio'/>
+                        <Button
+                            className={classnames('chat-input__audio', {
+                                'chat-input__audio-recording' : recording
+                            })}
+                            onClick={() => {
+                                if (!recording) {
+                                    onRecordingClick();
+                                } else {
+                                    onStopRecordingClick()
+                                }
+                            }}
+                            type='ghost'
+                            icon='audio'
+                        />
                     }
                     <UploadField
                         onFiles={files => onSelectFiles(files)}
